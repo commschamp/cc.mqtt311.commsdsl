@@ -1,0 +1,9 @@
+/// @brief Custom refresh functionality
+bool doRefresh()
+{
+    bool updated = refresh_willTopic();
+    updated = refresh_willMessage() || updated;
+    updated = refresh_userName() || updated;
+    updated = refresh_password() || updated;
+    return updated;
+}

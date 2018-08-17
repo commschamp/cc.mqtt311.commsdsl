@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="mqtt311"
+        id="1"
+        endian="big">
+    <fields>
+        <enum name="MsgId" type="uint8" semanticType="messageId" >
+            <validValue name="Connect" val="1" />
+            <validValue name="Connack" val="2" />
+            <validValue name="Publish" val="3" />
+            <validValue name="Puback" val="4" />
+            <validValue name="Pubrec" val="5" />
+            <validValue name="Pubrel" val="6" />
+            <validValue name="Pubcomp" val="7" />
+            <validValue name="Subscribe" val="8" />
+            <validValue name="Suback" val="9" />
+            <validValue name="Unsubscribe" val="10" />
+            <validValue name="Unsuback" val="11" />
+            <validValue name="Pingreq" val="12" />
+            <validValue name="Pingresp" val="13" />
+            <validValue name="Disconnect" val="14" />
+        </enum>
+        <enum name="Qos" type="uint8">
+            <validValue name="AtMostOnceDelivery" val="0" />
+            <validValue name="AtLeastOnceDelivery" val="1" />
+            <validValue name="ExactlyOnceDelivery" val="2" />
+        </enum>
+        <int name="Length" type="uint16" />
+        <string name="String" lengthPrefix="Length" />
+        <data name="BinData" lengthPrefix="Length" />
+        <string reuse="String" name="ProtocolName" defaultValue="MQTT" displayName="Protocol Name"/>
+    </fields>
+    
+    <interface name="Message">
+        <bitfield name="flags">
+            <set name="retain" bitLength="1" displayName="_">
+                <bit name="bit" idx="0" displayName="retain"/>
+            </set>
+            <enum reuse="Qos" bitLength="2" />
+            <set name="dup" bitLength="5" displayName="_">
+                <bit name="bit" idx="0" displayName="dup"/>
+            </set>
+        </bitfield>    
+    </interface>
+    
+    <frame name="Frame">
+        <custom name="IdAndFlags" idReplacement="true">
+            <field>
+                <bitfield name="idAndFlagsField">
+                    <int name="flags" type="uint8" bitLength="4" />
+                    <int name="id" type="uint8" bitLength="4" />
+                </bitfield>              
+            </field>
+        </custom>
+        <payload name="Data" />
+    </frame>       
+    
+    <message name="Connect" id="MsgId.Connect" displayName="CONNECT">
+        <ref name="protocolName" field="ProtocolName" />
+        <int name="protocolLevel" type="uint8" defaultValue="4" validValue="4" displayName="Protocol Level"/>
+        <bitfield name="connectFlags" displayName="Connect Flags">
+            <set name="low" bitLength="3" displayName="_">
+                <bit name="cleanSession" idx="1" displayName="Clean Session" />
+                <bit name="willFlag" idx="2" displayName="Will Flag" />
+            </set>
+            <enum reuse="Qos" name="willQos" displayName="Will QoS" bitLength="2" />
+            <set name="high" bitLength="3" displayName="_">
+                <bit name="willRetain" idx="0" displayName="Will Retain" />
+                <bit name="passwordFlag" idx="1" displayName="Password Flag" />
+                <bit name="userNameFlag" idx="2" displayName="User Name Flag" />
+            </set>
+        </bitfield>
+        <int name="keepAlive" type="uint16" displayName="Keep Alive" />
+        <ref name="clientId" field="String" displayName="Client ID" />
+        <optional name="willTopic" displayName="Will Topic" defaultMode="missing" externalModeCtrl="true">
+            <ref name="willTopic" field="String" displayName="Will Topic" />           
+        </optional>
+        <optional name="willMessage" displayName="Will Message" defaultMode="missing" externalModeCtrl="true">
+            <ref name="willMessage" field="BinData" displayName="Will Message" />           
+        </optional>        
+        <optional name="userName" displayName="User Name" defaultMode="missing" externalModeCtrl="true">
+            <ref name="userName" field="String" displayName="User Name" />           
+        </optional>        
+        <optional name="password" displayName="Password" defaultMode="missing" externalModeCtrl="true">
+            <ref name="password" field="String" displayName="Password" />           
+        </optional>        
+    </message>
+</schema>
