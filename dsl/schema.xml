@@ -122,4 +122,49 @@
     <message name="Pubrel" id="MsgId.Pubrel" displayName="PUBREL" copyFieldsFrom="Puback" />
     
     <message name="Pubcomp" id="MsgId.Pubcomp" displayName="PUBCOMP" copyFieldsFrom="Puback" />        
+    
+    <message name="Subscribe" id="MsgId.Subscribe" displayName="SUBSCRIBE">
+        <ref name="packetId" field="PacketId" />
+        <list name="list" displayName="List">
+            <element>
+                <bundle name="element" displayName="_">
+                    <ref name="topic" field="String" displayName="Topic" />
+                    <ref name="qos" field="Qos" />
+                </bundle>
+            </element>
+        </list>
+    </message>
+    
+    <message name="Suback" id="MsgId.Suback" displayName="SUBACK">
+        <ref name="packetId" field="PacketId" />
+        <list name="list" displayName="List">
+            <element>
+                <enum name="returnCode" type="uint8" displayName="Return Code">
+                    <validValue name="Qos0" val="0" displayName="Max QoS 0" />
+                    <validValue name="Qos1" val="1" displayName="Max QoS 1" />
+                    <validValue name="Qos2" val="2" displayName="Max QoS 2" />
+                    <validValue name="Failure" val="0x80" />
+                </enum>
+            </element>
+        </list>
+    </message>    
+    
+    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="UNSUBSCRIBE">
+        <ref name="packetId" field="PacketId" />
+        <list name="list" displayName="List">
+            <element>
+                <ref name="topic" field="String" displayName="Topic" />
+            </element>
+        </list>
+    </message>    
+    
+    <message name="Unsuback" id="MsgId.Unsuback" displayName="UNSUBACK">
+        <ref name="packetId" field="PacketId" />
+    </message>      
+    
+    <message name="Pingreq" id="MsgId.Pingreq" displayName="PINGREQ" />  
+    
+    <message name="Pingresp" id="MsgId.Pingresp" displayName="PINGRESP" />
+    
+    <message name="Disconnect" id="MsgId.Disconnect" displayName="DISCONNECT" />
 </schema>

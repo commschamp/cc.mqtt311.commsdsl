@@ -5,7 +5,5 @@ bool doValid() const
         return false;
     }
     
-    return 
-        (!field_flags().field_high().getBitValue_passwordFlag()) ||
-        (field_flags().field_high().getBitValue_userNameFlag());
+    return !field_list().value().empty();
 }
