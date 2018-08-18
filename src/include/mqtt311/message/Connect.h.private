@@ -16,22 +16,22 @@ static bool refreshOptionalField(bool exists, TOptField& optField)
 
 bool refresh_willTopic()
 {
-    return refreshOptionalField(field_connectFlags().field_low().getBitValue_willFlag(), field_willTopic());
+    return refreshOptionalField(field_flags().field_low().getBitValue_willFlag(), field_willTopic());
 }
 
 bool refresh_willMessage()
 {
-    return refreshOptionalField(field_connectFlags().field_low().getBitValue_willFlag(), field_willMessage());
+    return refreshOptionalField(field_flags().field_low().getBitValue_willFlag(), field_willMessage());
 }
 
 bool refresh_userName()
 {
-    return refreshOptionalField(field_connectFlags().field_high().getBitValue_userNameFlag(), field_userName());
+    return refreshOptionalField(field_flags().field_high().getBitValue_userNameFlag(), field_userName());
 }
 
 bool refresh_password()
 {
-    return refreshOptionalField(field_connectFlags().field_high().getBitValue_passwordFlag(), field_password());
+    return refreshOptionalField(field_flags().field_high().getBitValue_passwordFlag(), field_password());
 }
 
 
