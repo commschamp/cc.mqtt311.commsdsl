@@ -9,6 +9,7 @@
 
 #include "comms/MsgFactory.h"
 #include "comms/protocol/MsgIdLayer.h"
+#include "comms/field_cast.h"
 
 
 namespace mqtt311
@@ -177,17 +178,7 @@ private:
     template <typename TField1, typename TField2>
     static void copyFlagsValue(const TField1& from, TField2& to)
     {
-        std::uint8_t bufTmp[1] = {0};
-        static const std::size_t BufTmpSize = std::extent<decltype(bufTmp)>::value;
-        auto writeIter = &bufTmp[0];
-        auto es = from.write(writeIter, BufTmpSize);
-        GASSERT(es == comms::ErrorStatus::Success);
-        static_cast<void>(es);
-        
-        auto readIter = &bufTmp[0];
-        es = to.read(readIter, BufTmpSize);
-        GASSERT(es == comms::ErrorStatus::Success);
-        static_cast<void>(es);
+        to = comms::field_cast<TField>(from);
     }
 
     Factory m_factory;
