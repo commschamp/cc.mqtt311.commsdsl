@@ -175,10 +175,10 @@ private:
         return getMsgId(msg, Tag());
     }
     
-    template <typename TField1, typename TField2>
-    static void copyFlagsValue(const TField1& from, TField2& to)
+    template <typename TFrom, typename TTo>
+    static void copyFlagsValue(const TFrom& from, TTo& to)
     {
-        to = comms::field_cast<TField>(from);
+        to = comms::field_cast<TTo>(from);
     }
 
     Factory m_factory;
