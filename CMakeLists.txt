@@ -25,7 +25,7 @@ if ("${COMMSDSL2COMMS}" STREQUAL "")
             SOURCE_DIR "${commsdsl2comms_src_dir}"
             CMAKE_ARGS
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${commsdsl2comms_install_dir}
-                -DCOMMSDSL_NO_TESTS=ON -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPLER=${CMAKE_CXX_COMPLER}
+                -DCOMMSDSL_NO_TESTS=ON -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
             BINARY_DIR "${commsdsl2comms_bin_dir}"
         )
         
