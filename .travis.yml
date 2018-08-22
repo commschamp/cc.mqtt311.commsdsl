@@ -122,7 +122,6 @@ script:
   - cd build
   - cmake ..
   - VERBOSE=1 make
-  - cd .. 
   - echo "------------------ Debug build ------------------"
   - mkdir build.debug
   - cd build.debug
