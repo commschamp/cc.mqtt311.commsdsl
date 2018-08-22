@@ -120,7 +120,7 @@ script:
   - echo "------------------ Generating Source ------------------"
   - mkdir build
   - cd build
-  - cmake ..
+  - CC=gcc-5 CXX=g++-5 cmake ..
   - VERBOSE=1 make
   - echo "------------------ Debug build ------------------"
   - mkdir build.debug
