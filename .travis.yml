@@ -19,7 +19,7 @@ matrix:
           packages:
             - g++-4.8  
             - g++-5  
-      env: _CC=gcc-4.8 _CXX=g++-4.8 _DLS_CC=gcc-5 _DSL_CXX=g++-5 _BUILD="-DOPT_NO_WARN_AS_ERR=OFF"
+      env: _CC=gcc-4.8 _CXX=g++-4.8 _DLS_CC=gcc-5 _DSL_CXX=g++-5"
     - os: linux
       addons:
         apt:
