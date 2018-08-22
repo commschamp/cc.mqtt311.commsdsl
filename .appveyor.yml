@@ -39,7 +39,7 @@ build_script:
     - mkdir output.build
     - cd output.build
     - echo ------------------------- Building Output -------------------------
-    - cmake .. -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "NMake Makefiles" -DOPT_QT_DIR=%QTDIR%
+    - cmake ../output -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "NMake Makefiles" -DOPT_QT_DIR=%QTDIR%
     - nmake
 
 
