@@ -61,7 +61,7 @@
         <payload name="Data" />
     </frame>       
     
-    <message name="Connect" id="MsgId.Connect" displayName="CONNECT">
+    <message name="Connect" id="MsgId.Connect" displayName="CONNECT" sender="client">
         <ref field="ProtocolName" />
         <int name="ProtocolLevel" type="uint8" defaultValue="4" validValue="4" displayName="Protocol Level"/>
         <bitfield name="Flags" displayName="Connect Flags">
@@ -92,7 +92,7 @@
         </optional>        
     </message>
     
-    <message name="Connack" id="MsgId.Connack" displayName="CONNACK">
+    <message name="Connack" id="MsgId.Connack" displayName="CONNACK" sender="server">
         <set name="Flags" type="uint8" >
             <bit name="sp" idx="0" displayName="Session Present" />
         </set>    
@@ -124,7 +124,7 @@
     
     <message name="Pubcomp" id="MsgId.Pubcomp" displayName="PUBCOMP" copyFieldsFrom="Puback" />        
     
-    <message name="Subscribe" id="MsgId.Subscribe" displayName="SUBSCRIBE">
+    <message name="Subscribe" id="MsgId.Subscribe" displayName="SUBSCRIBE" sender="client">
         <ref field="PacketId" />
         <list name="List">
             <element>
@@ -136,7 +136,7 @@
         </list>
     </message>
     
-    <message name="Suback" id="MsgId.Suback" displayName="SUBACK">
+    <message name="Suback" id="MsgId.Suback" displayName="SUBACK" sender="server">
         <ref field="PacketId" />
         <list name="List">
             <element>
@@ -150,7 +150,7 @@
         </list>
     </message>    
     
-    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="UNSUBSCRIBE">
+    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="UNSUBSCRIBE" sender="client">
         <ref field="PacketId" />
         <list name="List">
             <element>
@@ -159,13 +159,13 @@
         </list>
     </message>    
     
-    <message name="Unsuback" id="MsgId.Unsuback" displayName="UNSUBACK">
+    <message name="Unsuback" id="MsgId.Unsuback" displayName="UNSUBACK" sender="server">
         <ref field="PacketId" />
     </message>      
     
-    <message name="Pingreq" id="MsgId.Pingreq" displayName="PINGREQ" />  
+    <message name="Pingreq" id="MsgId.Pingreq" displayName="PINGREQ" sender="client"/>  
     
-    <message name="Pingresp" id="MsgId.Pingresp" displayName="PINGRESP" />
+    <message name="Pingresp" id="MsgId.Pingresp" displayName="PINGRESP" sender="server"/>
     
-    <message name="Disconnect" id="MsgId.Disconnect" displayName="DISCONNECT" />
+    <message name="Disconnect" id="MsgId.Disconnect" displayName="DISCONNECT" sender="client"/>
 </schema>
