@@ -67,7 +67,8 @@ add_custom_command(
     OUTPUT ${tmp_dir}
     DEPENDS ${schema_file} ${src_files} ${extra_dep}
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${tmp_dir}
-    COMMAND ${COMMSDSL2COMMS} ${COMMSDSL2COMMS_EXTRA_ARGS} --warn-as-err -o ${tmp_dir} -c ${code_input_dir} ${schema_file}
+    COMMAND ${COMMSDSL2COMMS} --warn-as-err -o ${tmp_dir} 
+        -c ${code_input_dir} ${COMMSDSL2COMMS_EXTRA_ARGS} ${schema_file}
 )
 
 set (output_tgt ${name}_output_tgt)
