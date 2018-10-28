@@ -78,16 +78,16 @@
         </bitfield>
         <int name="KeepAlive" type="uint16" displayName="Keep Alive" />
         <ref name="ClientId" field="String" displayName="Client ID" />
-        <optional name="WillTopic" displayName="Will Topic" defaultMode="missing" externalModeCtrl="true">
+        <optional name="WillTopic" displayName="Will Topic" defaultMode="missing" displayExtModeCtrl="true">
             <ref name="WillTopic" field="String" displayName="Will Topic" />           
         </optional>
-        <optional name="WillMessage" displayName="Will Message" defaultMode="missing" externalModeCtrl="true">
+        <optional name="WillMessage" displayName="Will Message" defaultMode="missing" displayExtModeCtrl="true">
             <ref name="WillMessage" field="BinData" displayName="Will Message" />           
         </optional>        
-        <optional name="UserName" displayName="User Name" defaultMode="missing" externalModeCtrl="true">
+        <optional name="UserName" displayName="User Name" defaultMode="missing" displayExtModeCtrl="true">
             <ref name="UserName" field="String" displayName="User Name" />           
         </optional>        
-        <optional name="Password" defaultMode="missing" externalModeCtrl="true">
+        <optional name="Password" defaultMode="missing" displayExtModeCtrl="true">
             <ref name="Password" field="BinData" />           
         </optional>        
     </message>
@@ -108,7 +108,7 @@
     
     <message name="Publish" id="MsgId.Publish" displayName="PUBLISH">
         <ref field="Topic" />
-        <optional name="PacketId" displayName="Packet ID" defaultMode="missing" externalModeCtrl="true">
+        <optional name="PacketId" displayName="Packet ID" defaultMode="missing" displayExtModeCtrl="true">
             <field value="PacketId" />
         </optional>
         <data name="Payload" />
