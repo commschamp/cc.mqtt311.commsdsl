@@ -10,6 +10,9 @@ project is used to generate CMake project with proper C++ classes that
 implement protocol itself as well as protocol plugin for the
 [CommsChampion Tools](https://github.com/arobenko/comms_champion#commschampion-tools).
 
+The [src](src) folder contains additional and/or overriding default functionality 
+code snippets, that get injected into the generated code.
+
 The generated CMake project of this protocol definition is hosted and can be
 viewed at [cc.mqtt311.generated](https://github.com/arobenko/cc.mqtt311.generated)
 
@@ -73,6 +76,9 @@ $> nmake install
 # How to Use Generated Code
 Please read [How to Use Generated Code](https://github.com/arobenko/commsdsl#how-to-use-generated-code)
 guidelines from [commsdsl](https://github.com/arobenko/commsdsl) project.
+
+The [release](https://github.com/arobenko/cc.mqtt311.commsdsl/releases)
+artifacts contain doxygen generated documentation of the protocol definition.
 
 # Contact Information
 For bug reports, feature requests, or any other question you may open an issue
