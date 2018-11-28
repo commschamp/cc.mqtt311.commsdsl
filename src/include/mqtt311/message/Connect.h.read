@@ -2,11 +2,11 @@
 template <typename TIter>
 comms::ErrorStatus doRead(TIter& iter, std::size_t len)
 {
-    auto es = Base::template doReadFieldsUntil<FieldIdx_clientId>(iter, len);
+    auto es = Base::template doReadUntilAndUpdateLen<FieldIdx_clientId>(iter, len);
     if (es != comms::ErrorStatus::Success) {
         return es;
     }
     
     doRefresh();
-    return Base::template doReadFieldsFrom<FieldIdx_clientId>(iter, len);
+    return Base::template doReadFrom<FieldIdx_clientId>(iter, len);
 }

@@ -29,15 +29,16 @@
         <data name="BinData" lengthPrefix="Length" />
         <string reuse="String" name="ProtocolName" defaultValue="MQTT" displayName="Protocol Name"/>
         <int name="PacketId" type="uint16" displayName="Packet ID"/>
+        <ref name="Topic" field="String" />
     </fields>
     
     <interface name="Message">
-        <bitfield name="flags">
-            <set name="retain" bitLength="1" displayName="_">
+        <bitfield name="Flags">
+            <set name="Retain" bitLength="1" displayName="_">
                 <bit name="bit" idx="0" displayName="retain"/>
             </set>
             <enum reuse="Qos" bitLength="2" />
-            <set name="dup" bitLength="5" displayName="_">
+            <set name="Dup" bitLength="5" displayName="_">
                 <bit name="bit" idx="0" displayName="dup"/>
             </set>
         </bitfield>    
@@ -46,9 +47,9 @@
     <frame name="Frame">
         <custom name="IdAndFlags" idReplacement="true">
             <field>
-                <bitfield name="idAndFlagsField" displayName="ID + Flags">
-                    <int name="flags" type="uint8" bitLength="4" />
-                    <int name="id" type="uint8" bitLength="4" />
+                <bitfield name="IdAndFlagsField" displayName="ID + Flags">
+                    <int name="Flags" type="uint8" bitLength="4" />
+                    <int name="Id" type="uint8" bitLength="4" />
                 </bitfield>              
             </field>
         </custom>
@@ -60,42 +61,42 @@
         <payload name="Data" />
     </frame>       
     
-    <message name="Connect" id="MsgId.Connect" displayName="CONNECT">
-        <ref name="protocolName" field="ProtocolName" />
-        <int name="protocolLevel" type="uint8" defaultValue="4" validValue="4" displayName="Protocol Level"/>
-        <bitfield name="flags" displayName="Connect Flags">
-            <set name="low" bitLength="3" displayName="_">
+    <message name="Connect" id="MsgId.Connect" displayName="CONNECT" sender="client">
+        <ref field="ProtocolName" />
+        <int name="ProtocolLevel" type="uint8" defaultValue="4" validValue="4" displayName="Protocol Level"/>
+        <bitfield name="Flags" displayName="Connect Flags">
+            <set name="Low" bitLength="3" displayName="_">
                 <bit name="cleanSession" idx="1" displayName="Clean Session" />
                 <bit name="willFlag" idx="2" displayName="Will Flag" />
             </set>
-            <enum reuse="Qos" name="willQos" displayName="Will QoS" bitLength="2" />
-            <set name="high" bitLength="3" displayName="_">
+            <enum reuse="Qos" name="WillQos" displayName="Will QoS" bitLength="2" />
+            <set name="High" bitLength="3" displayName="_">
                 <bit name="willRetain" idx="0" displayName="Will Retain" />
                 <bit name="passwordFlag" idx="1" displayName="Password Flag" />
                 <bit name="userNameFlag" idx="2" displayName="User Name Flag" />
             </set>
         </bitfield>
-        <int name="keepAlive" type="uint16" displayName="Keep Alive" />
-        <ref name="clientId" field="String" displayName="Client ID" />
-        <optional name="willTopic" displayName="Will Topic" defaultMode="missing" externalModeCtrl="true">
-            <ref name="willTopic" field="String" displayName="Will Topic" />           
+        <int name="KeepAlive" type="uint16" displayName="Keep Alive" />
+        <ref name="ClientId" field="String" displayName="Client ID" />
+        <optional name="WillTopic" displayName="Will Topic" defaultMode="missing" displayExtModeCtrl="true">
+            <ref name="WillTopic" field="String" displayName="Will Topic" />           
         </optional>
-        <optional name="willMessage" displayName="Will Message" defaultMode="missing" externalModeCtrl="true">
-            <ref name="willMessage" field="BinData" displayName="Will Message" />           
+        <optional name="WillMessage" displayName="Will Message" defaultMode="missing" displayExtModeCtrl="true">
+            <ref name="WillMessage" field="BinData" displayName="Will Message" />           
         </optional>        
-        <optional name="userName" displayName="User Name" defaultMode="missing" externalModeCtrl="true">
-            <ref name="userName" field="String" displayName="User Name" />           
+        <optional name="UserName" displayName="User Name" defaultMode="missing" displayExtModeCtrl="true">
+            <ref name="UserName" field="String" displayName="User Name" />           
         </optional>        
-        <optional name="password" displayName="Password" defaultMode="missing" externalModeCtrl="true">
-            <ref name="password" field="BinData" displayName="Password" />           
+        <optional name="Password" defaultMode="missing" displayExtModeCtrl="true">
+            <ref name="Password" field="BinData" />           
         </optional>        
     </message>
     
-    <message name="Connack" id="MsgId.Connack" displayName="CONNACK">
-        <set name="flags" type="uint8" >
+    <message name="Connack" id="MsgId.Connack" displayName="CONNACK" sender="server">
+        <set name="Flags" type="uint8" >
             <bit name="sp" idx="0" displayName="Session Present" />
         </set>    
-        <enum name="returnCode" type="uint8" displayName="Return Code">
+        <enum name="ReturnCode" type="uint8" displayName="Return Code">
             <validValue name="Accepted" val="0" />
             <validValue name="BadProtocolVersion" val="1" displayName="Bad Protocol Version" />
             <validValue name="IdentifierRejected" val="2" displayName="Identifier Rejected" />
@@ -106,15 +107,15 @@
     </message>    
     
     <message name="Publish" id="MsgId.Publish" displayName="PUBLISH">
-        <ref name="topic" field="String" displayName="Topic" />
-        <optional name="packetId" displayName="Packet ID" defaultMode="missing" externalModeCtrl="true">
+        <ref field="Topic" />
+        <optional name="PacketId" displayName="Packet ID" defaultMode="missing" displayExtModeCtrl="true">
             <field value="PacketId" />
         </optional>
-        <data name="payload" displayName="Payload" />
+        <data name="Payload" />
     </message>  
     
     <message name="Puback" id="MsgId.Puback" displayName="PUBACK">
-        <ref name="packetId" field="PacketId" />
+        <ref field="PacketId" />
     </message> 
     
     <message name="Pubrec" id="MsgId.Pubrec" displayName="PUBREC" copyFieldsFrom="Puback" />
@@ -123,23 +124,23 @@
     
     <message name="Pubcomp" id="MsgId.Pubcomp" displayName="PUBCOMP" copyFieldsFrom="Puback" />        
     
-    <message name="Subscribe" id="MsgId.Subscribe" displayName="SUBSCRIBE">
-        <ref name="packetId" field="PacketId" />
-        <list name="list" displayName="List">
+    <message name="Subscribe" id="MsgId.Subscribe" displayName="SUBSCRIBE" sender="client">
+        <ref field="PacketId" />
+        <list name="List">
             <element>
-                <bundle name="element" displayName="_">
-                    <ref name="topic" field="String" displayName="Topic" />
-                    <ref name="qos" field="Qos" />
+                <bundle name="Element" displayName="_">
+                    <ref field="Topic" />
+                    <ref field="Qos" />
                 </bundle>
             </element>
         </list>
     </message>
     
-    <message name="Suback" id="MsgId.Suback" displayName="SUBACK">
-        <ref name="packetId" field="PacketId" />
-        <list name="list" displayName="List">
+    <message name="Suback" id="MsgId.Suback" displayName="SUBACK" sender="server">
+        <ref field="PacketId" />
+        <list name="List">
             <element>
-                <enum name="returnCode" type="uint8" displayName="Return Code">
+                <enum name="ReturnCode" type="uint8" displayName="Return Code">
                     <validValue name="Qos0" val="0" displayName="Max QoS 0" />
                     <validValue name="Qos1" val="1" displayName="Max QoS 1" />
                     <validValue name="Qos2" val="2" displayName="Max QoS 2" />
@@ -149,22 +150,22 @@
         </list>
     </message>    
     
-    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="UNSUBSCRIBE">
-        <ref name="packetId" field="PacketId" />
-        <list name="list" displayName="List">
+    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="UNSUBSCRIBE" sender="client">
+        <ref field="PacketId" />
+        <list name="List">
             <element>
-                <ref name="topic" field="String" displayName="Topic" />
+                <ref field="Topic" />
             </element>
         </list>
     </message>    
     
-    <message name="Unsuback" id="MsgId.Unsuback" displayName="UNSUBACK">
-        <ref name="packetId" field="PacketId" />
+    <message name="Unsuback" id="MsgId.Unsuback" displayName="UNSUBACK" sender="server">
+        <ref field="PacketId" />
     </message>      
     
-    <message name="Pingreq" id="MsgId.Pingreq" displayName="PINGREQ" />  
+    <message name="Pingreq" id="MsgId.Pingreq" displayName="PINGREQ" sender="client"/>  
     
-    <message name="Pingresp" id="MsgId.Pingresp" displayName="PINGRESP" />
+    <message name="Pingresp" id="MsgId.Pingresp" displayName="PINGRESP" sender="server"/>
     
-    <message name="Disconnect" id="MsgId.Disconnect" displayName="DISCONNECT" />
+    <message name="Disconnect" id="MsgId.Disconnect" displayName="DISCONNECT" sender="client"/>
 </schema>

@@ -9,6 +9,7 @@
 
 #include "comms/MsgFactory.h"
 #include "comms/protocol/MsgIdLayer.h"
+#include "comms/field_cast.h"
 
 
 namespace mqtt311
@@ -24,7 +25,7 @@ namespace layer
 /// @tparam TField Used field type
 /// @tparam TMessage Interface class
 /// @tparam TAllMessages Input messages
-/// @tparam TNext Layer Next frame layer
+/// @tparam TNextLayer Next frame layer
 /// @tparam TExtraOpt Extra options passed to @b comms::MsgFactory
 template <
     typename TField,
@@ -174,20 +175,10 @@ private:
         return getMsgId(msg, Tag());
     }
     
-    template <typename TField1, typename TField2>
-    static void copyFlagsValue(const TField1& from, TField2& to)
+    template <typename TFrom, typename TTo>
+    static void copyFlagsValue(const TFrom& from, TTo& to)
     {
-        std::uint8_t bufTmp[1] = {0};
-        static const std::size_t BufTmpSize = std::extent<decltype(bufTmp)>::value;
-        auto writeIter = &bufTmp[0];
-        auto es = from.write(writeIter, BufTmpSize);
-        GASSERT(es == comms::ErrorStatus::Success);
-        static_cast<void>(es);
-        
-        auto readIter = &bufTmp[0];
-        es = to.read(readIter, BufTmpSize);
-        GASSERT(es == comms::ErrorStatus::Success);
-        static_cast<void>(es);
+        to = comms::field_cast<TTo>(from);
     }
 
     Factory m_factory;
