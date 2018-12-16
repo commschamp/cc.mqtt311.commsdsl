@@ -48,12 +48,12 @@ If code generation output directory is not provided, it defaults to
 $> cd /source/of/this/project
 $> mkdir build && cd build
 $> cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install 
-$> make install
+$> make 
 ```
 To build the generated project continue with
 ```
 $> cd output && mkdir build && cd build
-$> cmake -DCMAKE_BUILD_TYPE=Release ..
+$> cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/install ..
 $> make install
 ```
 
@@ -65,7 +65,7 @@ $> cd build
 $> cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release \ 
     -DCMAKE_INSTALL_PREFIX=%cd%/install \
     -DBOOST_ROOT="C:\Libraries\boost_1_65_1" -DBoost_USE_STATIC_LIBS=ON ..
-$> nmake install
+$> nmake 
 ```
 To build the generated project continue with
 ```
@@ -73,8 +73,12 @@ $> cd output
 $> mkdir build 
 $> cd build
 $> cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release \
-    -DCC_QT_DIR=C:\Qt\5.6.3\msvc2015 ..
+    -DCC_QT_DIR=C:\Qt\5.6.3\msvc2015 -DCMAKE_INSTALL_PREFIX=%cd%/install ..
 $> nmake install
+```
+To deploy Qt5 libraries into the installation directory continue with
+```
+$> nmake deploy_qt
 ```
 
 # How to Use Generated Code
