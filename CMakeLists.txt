@@ -39,7 +39,7 @@ if ("${COMMSDSL2COMMS}" STREQUAL "")
             PREFIX "${commsdsl2comms_bin_dir}"
             STAMP_DIR "${commsdsl2comms_bin_dir}"
             GIT_REPOSITORY "https://github.com/arobenko/commsdsl.git"
-            GIT_TAG "${commsdsl2comms_tag}"
+            GIT_TAG "${COMMSDSL_TAG}"
             SOURCE_DIR "${commsdsl2comms_src_dir}"
             CMAKE_ARGS
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${commsdsl2comms_install_dir}
