@@ -14,7 +14,7 @@ project ("cc.mqtt311.commsdsl")
 #     is not provided and examples are not disabled.
 
 if ("${COMMSDSL_TAG}" STREQUAL "")
-    set(COMMSDSL_TAG "ds2")
+    set(COMMSDSL_TAG "dsl2")
 endif ()
 
 if ("${COMMS_TAG}" STREQUAL "")
