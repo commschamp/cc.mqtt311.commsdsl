@@ -68,7 +68,7 @@
         </custom>
         <size name="Size">
             <field>
-                <int name="Size" type="Uintvar" length="4" endian="little"/>
+                <int name="Size" type="uintvar" length="4" endian="little"/>
             </field>
         </size>
         <payload name="Data" />
