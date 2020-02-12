@@ -113,7 +113,7 @@
             <validValue name="Accepted" val="0" />
             <validValue name="BadProtocolVersion" val="1" displayName="Bad Protocol Version" />
             <validValue name="IdentifierRejected" val="2" displayName="Identifier Rejected" />
-            <validValue name="ServerUnavalable" val="3" displayName="Server Unavailable" />
+            <validValue name="ServerUnavailable" val="3" displayName="Server Unavailable" />
             <validValue name="BadAuth" val="4" displayName="Bad Auth Details" />
             <validValue name="NotAuthorized" val="5" displayName="Not Authorized" />
         </enum>
