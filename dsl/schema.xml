@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema name="mqtt311" endian="big" dslVersion="2">
+<schema name="mqtt311" endian="big" dslVersion="5">
     <fields>
         <string name="ConnectName" defaultValue="CONNECT" />
         <string name="ConnackName" defaultValue="CONNACK" />
@@ -74,7 +74,7 @@
         <payload name="Data" />
     </frame>       
     
-    <message name="Connect" id="MsgId.Connect" displayName="^ConnectName" sender="client">
+    <message name="Connect" id="MsgId.Connect" displayName="^ConnectName" validOverride="extend" sender="client">
         <ref field="ProtocolName" />
         <int name="ProtocolLevel" type="uint8" defaultValue="4" validValue="4" displayName="Protocol Level"/>
         <bitfield name="Flags" displayName="Connect Flags">
@@ -92,20 +92,32 @@
         <int name="KeepAlive" type="uint16" displayName="Keep Alive" />
         <ref name="ClientId" field="String" displayName="Client ID" />
         <optional name="WillTopic" displayName="Will Topic" defaultMode="missing" displayExtModeCtrl="true">
-            <ref name="WillTopic" field="String" displayName="Will Topic" />           
+            <cond value="$Flags.Low.willFlag" />
+            <field>
+                <ref name="WillTopic" field="String" displayName="Will Topic" />           
+            </field>
         </optional>
         <optional name="WillMessage" displayName="Will Message" defaultMode="missing" displayExtModeCtrl="true">
-            <ref name="WillMessage" field="BinData" displayName="Will Message" />           
+            <cond value="$Flags.Low.willFlag" />
+            <field>
+                <ref name="WillMessage" field="BinData" displayName="Will Message" />           
+            </field>
         </optional>        
         <optional name="UserName" displayName="User Name" defaultMode="missing" displayExtModeCtrl="true">
-            <ref name="UserName" field="String" displayName="User Name" />           
+            <cond value="$Flags.High.userNameFlag" />
+            <field>
+                <ref name="UserName" field="String" displayName="User Name" />           
+            </field>
         </optional>        
         <optional name="Password" defaultMode="missing" displayExtModeCtrl="true">
-            <ref name="Password" field="BinData" />           
+            <cond value="$Flags.High.passwordFlag" />
+            <field>
+                <ref name="Password" field="BinData" />           
+            </field>
         </optional>        
     </message>
     
-    <message name="Connack" id="MsgId.Connack" displayName="^ConnackName" sender="server">
+    <message name="Connack" id="MsgId.Connack" displayName="^ConnackName" validOverride="extend" sender="server">
         <set name="Flags" type="uint8" >
             <bit name="sp" idx="0" displayName="Session Present" />
         </set>    
@@ -119,7 +131,7 @@
         </enum>
     </message>    
     
-    <message name="Publish" id="MsgId.Publish" displayName="^PublishName">
+    <message name="Publish" id="MsgId.Publish" displayName="^PublishName" readOverride="replace" refreshOverride="replace">
         <ref field="Topic" />
         <optional name="PacketId" displayName="Packet ID" defaultMode="missing" displayExtModeCtrl="true">
             <field value="PacketId" />
@@ -127,17 +139,17 @@
         <data name="Payload" />
     </message>  
     
-    <message name="Puback" id="MsgId.Puback" displayName="^PubackName">
+    <message name="Puback" id="MsgId.Puback" displayName="^PubackName" validOverride="extend">
         <ref field="PacketId" />
     </message> 
     
-    <message name="Pubrec" id="MsgId.Pubrec" displayName="^PubrecName" copyFieldsFrom="Puback" />
+    <message name="Pubrec" id="MsgId.Pubrec" displayName="^PubrecName" copyFieldsFrom="Puback" validOverride="extend" />
     
-    <message name="Pubrel" id="MsgId.Pubrel" displayName="^PubrelName" copyFieldsFrom="Puback" />
+    <message name="Pubrel" id="MsgId.Pubrel" displayName="^PubrelName" copyFieldsFrom="Puback" validOverride="extend" />
     
-    <message name="Pubcomp" id="MsgId.Pubcomp" displayName="^PubcompName" copyFieldsFrom="Puback" />        
+    <message name="Pubcomp" id="MsgId.Pubcomp" displayName="^PubcompName" copyFieldsFrom="Puback" validOverride="extend" />        
     
-    <message name="Subscribe" id="MsgId.Subscribe" displayName="^SubscribeName" sender="client">
+    <message name="Subscribe" id="MsgId.Subscribe" displayName="^SubscribeName" validOverride="extend" sender="client">
         <ref field="PacketId" />
         <list name="List">
             <element>
@@ -149,7 +161,7 @@
         </list>
     </message>
     
-    <message name="Suback" id="MsgId.Suback" displayName="^SubackName" sender="server">
+    <message name="Suback" id="MsgId.Suback" displayName="^SubackName" validOverride="extend" sender="server">
         <ref field="PacketId" />
         <list name="List">
             <element>
@@ -163,7 +175,7 @@
         </list>
     </message>    
     
-    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="^UnsubscribeName" sender="client">
+    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="^UnsubscribeName" validOverride="extend" sender="client">
         <ref field="PacketId" />
         <list name="List">
             <element>
@@ -176,9 +188,9 @@
         <ref field="PacketId" />
     </message>      
     
-    <message name="Pingreq" id="MsgId.Pingreq" displayName="^PingreqName" sender="client"/>  
+    <message name="Pingreq" id="MsgId.Pingreq" displayName="^PingreqName" validOverride="extend" sender="client"/>  
     
-    <message name="Pingresp" id="MsgId.Pingresp" displayName="^PingrespName" sender="server"/>
+    <message name="Pingresp" id="MsgId.Pingresp" displayName="^PingrespName" validOverride="extend"  sender="server"/>
     
     <message name="Disconnect" id="MsgId.Disconnect" displayName="^DisconnectName" sender="client"/>
 </schema>

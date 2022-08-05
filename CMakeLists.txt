@@ -55,10 +55,15 @@ add_custom_target(rm_tmp_tgt
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${tools_tmp_dir}
 )
 
+set (code_input_param)
+if (EXISTS ${PROJECT_SOURCE_DIR}/src)
+set (code_input_param -c ${PROJECT_SOURCE_DIR}/src)
+endif ()
+
 add_custom_command(
     OUTPUT ${prot_tmp_dir}
     DEPENDS ${schema_file} ${src_files} rm_tmp_tgt
-    COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -V ${VERSION}
+    COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -V ${VERSION} ${code_input_param}
         -o ${prot_tmp_dir} 
         ${COMMSDSL2COMMS_EXTRA_ARGS}  ${schema_file}
 )
@@ -132,6 +137,9 @@ if (MQTT311_BUILD_GEN_PROTOCOL)
     endif ()
 endif ()  
 
+set (combined_prefix_path ${CMAKE_INSTALL_PREFIX} ${CMAKE_PREFIX_PATH})
+string (REPLACE ";" "|" combined_prefix_path_str "${combined_prefix_path}")
+
 if (MQTT311_BUILD_GEN_TEST)
     if (NOT MQTT311_BUILD_GEN_PROTOCOL)
         message (FATAL_ERROR "MQTT311_BUILD_GEN_PROTOCOL is required for MQTT311_BUILD_GEN_TEST")
@@ -154,9 +162,10 @@ if (MQTT311_BUILD_GEN_TEST)
         BINARY_DIR ${test_build_dir}
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_GENERATOR ${CMAKE_GENERATOR}
+        LIST_SEPARATOR |
         CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-            -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+            -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
     )   
 endif ()
 
@@ -183,9 +192,10 @@ if (MQTT311_BUILD_GEN_TOOLS)
         BINARY_DIR ${tools_build_dir}
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_GENERATOR ${CMAKE_GENERATOR}
+        LIST_SEPARATOR |
         CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-            -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+            -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
     )   
 endif ()
 
