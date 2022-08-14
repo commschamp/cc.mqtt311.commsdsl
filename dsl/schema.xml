@@ -58,7 +58,7 @@
     </interface>
     
     <frame name="Frame">
-        <custom name="IdAndFlags" idReplacement="true">
+        <custom name="IdAndFlags" semanticLayerType="id">
             <field>
                 <bitfield name="IdAndFlagsField" displayName="ID + Flags">
                     <int name="Flags" type="uint8" bitLength="4" />
@@ -76,7 +76,7 @@
     
     <message name="Connect" id="MsgId.Connect" displayName="^ConnectName" validOverride="extend" sender="client">
         <ref field="ProtocolName" />
-        <int name="ProtocolLevel" type="uint8" defaultValue="4" validValue="4" displayName="Protocol Level"/>
+        <int name="ProtocolLevel" type="uint8" defaultValidValue="4" displayName="Protocol Level"/>
         <bitfield name="Flags" displayName="Connect Flags">
             <set name="Low" bitLength="3" displayName="_">
                 <bit name="cleanSession" idx="1" displayName="Clean Session" />
