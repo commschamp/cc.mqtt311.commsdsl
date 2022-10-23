@@ -6,7 +6,7 @@
 #include "comms/protocol/MsgIdLayer.h"
 #include "comms/cast.h"
 
-namespace mqtt311
+namespace cc_mqtt311
 {
 
 namespace frame
@@ -91,6 +91,6 @@ public:
 
 } // namespace frame
 
-} // namespace mqtt311
+} // namespace cc_mqtt311
 
 
