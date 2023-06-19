@@ -74,7 +74,7 @@
         <payload name="Data" />
     </frame>       
     
-    <message name="Connect" id="MsgId.Connect" displayName="^ConnectName" validOverride="extend" sender="client">
+    <message name="Connect" id="MsgId.Connect" displayName="^ConnectName" sender="client">
         <fields>
             <ref field="ProtocolName" />
             <int name="ProtocolLevel" type="uint8" defaultValidValue="4" displayName="Protocol Level"/>
@@ -122,6 +122,11 @@
                 <validCond value="%Flags.Retain = 0" />
                 <validCond value="%Flags.Qos = Qos.AtMostOnceDelivery" />
                 <validCond value="%Flags.Dup = 0" />
+                <or>
+                    <!-- If password is present, username must be present also -->
+                    <validCond value="!$Flags.High.passwordFlag" />
+                    <validCond value="$Flags.High.userNameFlag" />
+                </or>
             </and>
         </validCond>            
     </message>
@@ -202,7 +207,7 @@
         </validCond>         
     </message>
     
-    <message name="Subscribe" id="MsgId.Subscribe" displayName="^SubscribeName" validOverride="extend" sender="client">
+    <message name="Subscribe" id="MsgId.Subscribe" displayName="^SubscribeName" sender="client">
         <construct value="%Flags.Qos = Qos.AtLeastOnceDelivery" />
         <fields>
             <ref field="PacketId" />
@@ -220,11 +225,12 @@
                 <validCond value="%Flags.Retain = 0" />
                 <validCond value="%Flags.Qos = Qos.AtLeastOnceDelivery" />
                 <validCond value="%Flags.Dup = 0" />
+                <validCond value="$#List != 0" />
             </and>
         </validCond>          
     </message>
     
-    <message name="Suback" id="MsgId.Suback" displayName="^SubackName" validOverride="extend" sender="server">
+    <message name="Suback" id="MsgId.Suback" displayName="^SubackName" sender="server">
         <fields>
             <ref field="PacketId" />
             <list name="List">
@@ -243,11 +249,12 @@
                 <validCond value="%Flags.Retain = 0" />
                 <validCond value="%Flags.Qos = Qos.AtMostOnceDelivery" />
                 <validCond value="%Flags.Dup = 0" />
+                <validCond value="$#List != 0" />
             </and>
         </validCond>          
     </message>    
     
-    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="^UnsubscribeName" validOverride="extend" sender="client">
+    <message name="Unsubscribe" id="MsgId.Unsubscribe" displayName="^UnsubscribeName" sender="client">
         <construct value="%Flags.Qos = Qos.AtLeastOnceDelivery" />
         <fields>
             <ref field="PacketId" />
@@ -262,6 +269,7 @@
                 <validCond value="%Flags.Retain = 0" />
                 <validCond value="%Flags.Qos = Qos.AtLeastOnceDelivery" />
                 <validCond value="%Flags.Dup = 0" />
+                <validCond value="$#List != 0" />
             </and>
         </validCond>           
     </message>    
