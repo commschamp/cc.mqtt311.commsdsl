@@ -90,7 +90,7 @@
                     <bit name="userNameFlag" idx="2" displayName="User Name Flag" />
                 </set>
             </bitfield>
-            <int name="KeepAlive" type="uint16" displayName="Keep Alive" />
+            <int name="KeepAlive" type="uint16" units="s" displayName="Keep Alive" />
             <ref name="ClientId" field="String" displayName="Client ID" />
             <optional name="WillTopic" displayName="Will Topic" defaultMode="missing" displayExtModeCtrl="true">
                 <cond value="$Flags.Low.willFlag" />
