@@ -222,6 +222,7 @@ if (MQTT311_GEN_TOOLS)
         OUTPUT ${tools_tmp_dir}
         DEPENDS ${schema_file} ${src_files} rm_tools_tmp_tgt
         COMMAND ${COMMSDSL2TOOLS_QT} ${warn_as_error} ${COMMSDSL2TOOLS_QT_EXTRA_ARGS}
+            --protocol "::CC MQTT v3.1.1:MQTT v3.1.1 protocol.:cc.Mqtt311ProtocolPlugin"
             -o ${tools_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/tools ${schema_file}
     )
 
