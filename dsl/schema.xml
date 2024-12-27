@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema name="cc_mqtt311" endian="big" dslVersion="6">
+<schema name="cc_mqtt311" endian="big" dslVersion="7">
     <fields>
         <string name="ConnectName" defaultValue="CONNECT" />
         <string name="ConnackName" defaultValue="CONNACK" />
@@ -40,9 +40,12 @@
         <int name="Length" type="uint16" />
         <string name="String" lengthPrefix="Length" />
         <data name="BinData" lengthPrefix="Length" />
-        <string reuse="String" name="ProtocolName" defaultValue="MQTT" displayName="Protocol Name" />
         <int name="PacketId" type="uint16" displayName="Packet ID"/>
         <ref name="Topic" field="String" />
+        <bitfield name="IdAndFlagsField" displayName="ID + Flags" valueOverride="replace">
+            <int name="Flags" type="uint8" bitLength="4" />
+            <ref name="Id" field="MsgId" bitLength="4" />
+        </bitfield>           
     </fields>
     
     <interface name="Message">
@@ -58,14 +61,7 @@
     </interface>
     
     <frame name="Frame">
-        <custom name="IdAndFlags" semanticLayerType="id">
-            <field>
-                <bitfield name="IdAndFlagsField" displayName="ID + Flags">
-                    <int name="Flags" type="uint8" bitLength="4" />
-                    <ref name="Id" field="MsgId" bitLength="4" />
-                </bitfield>              
-            </field>
-        </custom>
+        <custom name="IdAndFlags" semanticLayerType="id" field="IdAndFlagsField" />
         <size name="Size">
             <field>
                 <int name="Size" type="uintvar" length="4" endian="little"/>
@@ -76,7 +72,7 @@
     
     <message name="Connect" id="MsgId.Connect" displayName="^ConnectName" sender="client">
         <fields>
-            <ref field="ProtocolName" />
+            <string reuse="String" name="ProtocolName" defaultValidValue="MQTT" failOnInvalid="true" displayName="Protocol Name" />
             <int name="ProtocolLevel" type="uint8" defaultValidValue="4" displayName="Protocol Level"/>
             <bitfield name="Flags" displayName="Connect Flags">
                 <set name="Low" bitLength="3" displayName="_">
@@ -92,25 +88,25 @@
             </bitfield>
             <int name="KeepAlive" type="uint16" units="s" displayName="Keep Alive" />
             <ref name="ClientId" field="String" displayName="Client ID" />
-            <optional name="WillTopic" displayName="Will Topic" defaultMode="missing" displayExtModeCtrl="true">
+            <optional name="WillTopic" displayName="Will Topic" defaultMode="missing">
                 <cond value="$Flags.Low.willFlag" />
                 <field>
                     <ref name="WillTopic" field="String" displayName="Will Topic" />           
                 </field>
             </optional>
-            <optional name="WillMessage" displayName="Will Message" defaultMode="missing" displayExtModeCtrl="true">
+            <optional name="WillMessage" displayName="Will Message" defaultMode="missing">
                 <cond value="$Flags.Low.willFlag" />
                 <field>
                     <ref name="WillMessage" field="BinData" displayName="Will Message" />           
                 </field>
             </optional>        
-            <optional name="UserName" displayName="User Name" defaultMode="missing" displayExtModeCtrl="true">
+            <optional name="UserName" displayName="User Name" defaultMode="missing">
                 <cond value="$Flags.High.userNameFlag" />
                 <field>
                     <ref name="UserName" field="String" displayName="User Name" />           
                 </field>
             </optional>        
-            <optional name="Password" defaultMode="missing" displayExtModeCtrl="true">
+            <optional name="Password" defaultMode="missing">
                 <cond value="$Flags.High.passwordFlag" />
                 <field>
                     <ref name="Password" field="BinData" />           
@@ -156,7 +152,7 @@
     
     <message name="Publish" id="MsgId.Publish" displayName="^PublishName">
         <ref field="Topic" />
-        <optional name="PacketId" displayName="Packet ID" defaultMode="missing" displayExtModeCtrl="true">
+        <optional name="PacketId" displayName="Packet ID" defaultMode="missing">
             <cond value="%Flags.Qos &gt; Qos.AtMostOnceDelivery" />
             <field value="PacketId" />
         </optional>
@@ -176,15 +172,7 @@
         </validCond>           
     </message> 
     
-    <message name="Pubrec" id="MsgId.Pubrec" displayName="^PubrecName" copyFieldsFrom="Puback">
-        <validCond>
-            <and>
-                <validCond value="%Flags.Retain = 0" />
-                <validCond value="%Flags.Qos = Qos.AtMostOnceDelivery" />
-                <validCond value="%Flags.Dup = 0" />
-            </and>
-        </validCond>         
-    </message>
+    <message name="Pubrec" reuse="Puback" id="MsgId.Pubrec" displayName="^PubrecName" />
     
     <message name="Pubrel" id="MsgId.Pubrel" displayName="^PubrelName" copyFieldsFrom="Puback">
         <construct value="%Flags.Qos = Qos.AtLeastOnceDelivery" />
@@ -197,15 +185,7 @@
         </validCond>       
     </message>
     
-    <message name="Pubcomp" id="MsgId.Pubcomp" displayName="^PubcompName" copyFieldsFrom="Puback">        
-        <validCond>
-            <and>
-                <validCond value="%Flags.Retain = 0" />
-                <validCond value="%Flags.Qos = Qos.AtMostOnceDelivery" />
-                <validCond value="%Flags.Dup = 0" />
-            </and>
-        </validCond>         
-    </message>
+    <message name="Pubcomp" reuse="Puback" id="MsgId.Pubcomp" displayName="^PubcompName" />        
     
     <message name="Subscribe" id="MsgId.Subscribe" displayName="^SubscribeName" sender="client">
         <construct value="%Flags.Qos = Qos.AtLeastOnceDelivery" />
@@ -298,13 +278,7 @@
     </message>
     
     <message name="Pingresp" id="MsgId.Pingresp" displayName="^PingrespName" sender="server">
-        <validCond>
-            <and>
-                <validCond value="%Flags.Retain = 0" />
-                <validCond value="%Flags.Qos = Qos.AtMostOnceDelivery" />
-                <validCond value="%Flags.Dup = 0" />
-            </and>
-        </validCond>       
+        <copyValidCondFrom value="Pingreq" />
     </message>
     
     <message name="Disconnect" id="MsgId.Disconnect" displayName="^DisconnectName" sender="client"/>
