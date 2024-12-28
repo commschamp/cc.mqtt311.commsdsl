@@ -379,11 +379,10 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DMQTT311_GEN_PROTOCOL=ON -DMQTT311_GEN_TEST=ON -DMQTT311_GEN_TOOLS=ON -DMQTT311_BUILD_TOOLS=${{env.BUILD_TOOLS}}
+        -DMQTT311_GEN_PROTOCOL=ON -DMQTT311_GEN_TEST=ON 
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
-        BUILD_TOOLS: "${{ matrix.cpp == 17 && 'ON' || 'OFF' }}"
 
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build
