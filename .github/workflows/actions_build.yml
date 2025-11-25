@@ -348,7 +348,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
-          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install" ^
+          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.QTDIR}}" ^
           -DCMAKE_CXX_STANDARD=${{matrix.cpp}}  -DMQTT311_GEN_TOOLS=ON -DMQTT311_BUILD_TOOLS=${{env.BUILD_TOOLS}} -DMQTT311_TOOLS_QT_VER=${{matrix.qt_ver}} ^
           -DMQTT311_GEN_PROTOCOL=ON -DMQTT311_GEN_TEST=ON -DMQTT311_GEN_C=ON -DMQTT311_GEN_LATEX=ON -DMQTT311_BUILD_LATEX=OFF ^
       env:
