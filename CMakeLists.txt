@@ -171,7 +171,7 @@ if (MQTT311_GEN_TEST)
 
     add_custom_target("test_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${test_tmp_dir}
-        COMMAND ${COMMSDSL2TEST} ${warn_as_error} ${COMMSDSL2TEST_EXTRA_ARGS}
+        COMMAND ${COMMSDSL2TEST} ${warn_as_error} -V ${MQTT311_VERSION} ${COMMSDSL2TEST_EXTRA_ARGS}
             -o ${test_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/test ${schema_file}        
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${test_tmp_dir}" -DOUTPUT="${MQTT311_TEST_OUTPUT_DIR}"
